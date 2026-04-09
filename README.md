@@ -37,7 +37,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the calendar.
 
 ## Design Choices
 
-- **Organic Shapes**: Used `clip-path: ellipse` on the hero section to create an editorial feel rather than a rigid rectangle.
+
 - **Skeuomorphism**: The "Spiral Header" with 3D wire-hooks anchors the design in a physical "Wall Calendar" metaphor.
 - **Micro-interactions**: Subtle hover scaling and backdrop blurs provide tactile feedback without clutter.
 - **Native Performance**: All animations are handled by CSS to ensure smooth performance even on lower-end devices.
