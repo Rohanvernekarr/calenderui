@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import styles from "./Calendar.module.css"
 import { DateRange } from "../../types/calendar"
+import { NotebookPen, History } from "lucide-react"
 
 interface NotesPanelProps {
   range: DateRange
@@ -49,17 +50,20 @@ export default function NotesPanel({ range, month, onClearRange }: NotesPanelPro
   }
 
   const getLabel = () => {
-    if (range.startDate && range.endDate) return "Range Note"
-    if (range.startDate) return `Note for ${range.startDate.getDate()} ${range.startDate.toLocaleString('default', { month: 'short' })}`
-    return "Monthly Memos"
+    if (range.startDate && range.endDate) return "Date Range Notes"
+    if (range.startDate) return `${range.startDate.getDate()} ${range.startDate.toLocaleString('default', { month: 'short' })} Notes`
+    return "Monthly Journal"
   }
 
   return (
     <div className={styles.notesSection}>
-      <h3 className={styles.notesTitle}>{getLabel()}</h3>
+      <h3 className={styles.notesTitle}>
+        <NotebookPen size={18} />
+        {getLabel()}
+      </h3>
       <textarea
         className={styles.notesArea}
-        placeholder={range.startDate ? "Add specific notes for this selection..." : "General memos for the month..."}
+        placeholder={range.startDate ? "Write your plans for this selection..." : "What's on your mind for this month?"}
         value={currentNote}
         onChange={handleChange}
       />
@@ -67,9 +71,13 @@ export default function NotesPanel({ range, month, onClearRange }: NotesPanelPro
       {range.startDate && (
         <div className={styles.notesFooter}>
           <button onClick={onClearRange} className={styles.clearRangeButton}>
-            ← Back to Monthly Notes
+            <History size={16} />
+            Show Monthly Notes
           </button>
-          <span className={styles.selectionClearHint}>Selection: {range.startDate.toLocaleDateString()} {range.endDate ? ` - ${range.endDate.toLocaleDateString()}` : ''}</span>
+          <div className={styles.selectionClearHint}>
+            <strong>Selection:</strong> {range.startDate.toLocaleDateString()} 
+            {range.endDate ? ` — ${range.endDate.toLocaleDateString()}` : ''}
+          </div>
         </div>
       )}
     </div>

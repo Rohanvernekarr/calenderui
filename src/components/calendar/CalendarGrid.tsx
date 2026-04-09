@@ -8,11 +8,13 @@ interface CalendarGridProps {
   days: CalendarDay[]
   range: DateRange
   onSelect: (date: Date) => void
+  direction: 'forward' | 'backward' | null
+  monthKey: number
 }
 
 const WEEKDAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
-export default function CalendarGrid({ days, range, onSelect }: CalendarGridProps) {
+export default function CalendarGrid({ days, range, onSelect, direction, monthKey }: CalendarGridProps) {
   const isDateInRange = (date: Date) => {
     if (!range.startDate || !range.endDate) return false
     return date >= range.startDate && date <= range.endDate
@@ -21,6 +23,12 @@ export default function CalendarGrid({ days, range, onSelect }: CalendarGridProp
   const isStart = (date: Date) => range.startDate?.toDateString() === date.toDateString()
   const isEnd = (date: Date) => range.endDate?.toDateString() === date.toDateString()
 
+  const animationClass = direction === 'forward' 
+    ? styles.slideForwardEnter 
+    : direction === 'backward' 
+      ? styles.slideBackwardEnter 
+      : ""
+
   return (
     <div className={styles.calendarGrid}>
       <div className={styles.dayNames}>
@@ -28,7 +36,10 @@ export default function CalendarGrid({ days, range, onSelect }: CalendarGridProp
           <div key={day} className={styles.dayNameShort}>{day}</div>
         ))}
       </div>
-      <div className={styles.daysGrid}>
+      <div 
+        key={monthKey} 
+        className={`${styles.daysGrid} ${animationClass}`}
+      >
         {days.map((day, i) => (
           <DayCell
             key={i}

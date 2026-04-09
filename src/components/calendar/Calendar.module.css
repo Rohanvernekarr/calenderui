@@ -1,164 +1,285 @@
 .calendarContainer {
   --primary: #3b82f6;
+  --primary-dark: #1d4ed8;
   --secondary: #6366f1;
   --bg-card: #ffffff;
   --text-main: #1f2937;
   --text-muted: #6b7280;
   --border-light: #f3f4f6;
   --accent-light: #eff6ff;
-  
+  --ring-color: rgba(59, 130, 246, 0.2);
+
   width: calc(100% - 2rem);
   max-width: 900px;
-  margin: 1rem auto;
+  margin: 2rem auto;
   background: var(--bg-card);
-  border-radius: 24px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border-radius: 32px;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
   position: relative;
   overflow: hidden;
-  font-family: 'Inter', sans-serif;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  font-family: var(--font-outfit), var(--font-geist-sans), sans-serif;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+  animation: calendarEntry 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes calendarEntry {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .calendarContainer:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 35px 60px -15px rgba(0, 0, 0, 0.25);
 }
 
 .spiralHeader {
-  height: 40px;
-  background: #f9fafb;
+  height: 48px;
+  background: linear-gradient(to bottom, #f0f1f1, #dfe1e4);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   border-bottom: 1px solid var(--border-light);
-  z-index: 10;
+  z-index: 20;
   position: relative;
   padding: 0 1rem;
 }
 
 .spiralLink {
-  width: 8px;
-  height: 24px;
-  background: #d1d5db;
-  border-radius: 4px;
-  box-shadow: inset 2px 0 4px rgba(0,0,0,0.1);
+  width: 10px;
+  height: 32px;
+  background: linear-gradient(135deg, #646567 0%, #e1e3e7 100%);
+  border-radius: 6px;
+  box-shadow:
+    inset 2px 2px 4px rgba(0, 0, 0, 0.05),
+    2px 2px 5px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
+  position: relative;
+}
+
+.spiralLink::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
 }
 
 .heroSection {
   position: relative;
-  height: clamp(200px, 40vh, 380px);
+  height: clamp(260px, 48vh, 440px);
   overflow: hidden;
+  background: #000;
+  clip-path: ellipse(120% 110% at 50% 0%);
+  margin-bottom: -30px;
+  z-index: 5;
 }
 
 .heroImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+  transition: transform 1.2s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.8s ease;
+  opacity: 0.9;
+}
+
+.heroSection::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.2) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
 }
 
 .heroSection:hover .heroImage {
   transform: scale(1.08);
+  opacity: 1;
 }
 
 .monthPlate {
   position: absolute;
-  bottom: 0;
+  bottom: 80px;
   right: 0;
-  background: var(--primary);
+  background: rgba(59, 130, 246, 0.95);
+  backdrop-filter: blur(16px);
   color: white;
-  padding: 1.5rem 3rem;
-  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+  padding: 1.5rem 4rem 1.5rem 3rem;
+  clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
   text-align: right;
-  min-width: 260px;
-  box-shadow: -10px 0 20px rgba(0,0,0,0.15);
-  z-index: 5;
+  min-width: 280px;
+  box-shadow: -15px 0 40px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: plateEntry 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes plateEntry {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.heroSection:hover .monthPlate {
+  transform: translateX(-15px) translateY(-5px);
+  background: var(--primary);
 }
 
 .yearText {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 300;
-  opacity: 0.9;
-  letter-spacing: 0.15em;
+  opacity: 0.8;
+  letter-spacing: 0.3em;
+  margin-bottom: 0.25rem;
 }
 
 .monthText {
-  font-size: 2.2rem;
-  font-weight: 800;
+  font-size: 2.8rem;
+  font-weight: 900;
   text-transform: uppercase;
-  margin-top: -4px;
-  letter-spacing: -0.02em;
+  margin-top: -6px;
+  letter-spacing: -0.04em;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .mainLayout {
   display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  padding: 2.5rem;
-  gap: 3rem;
+  grid-template-columns: 1fr 1.8fr;
+  padding: 3rem;
+  gap: 4rem;
+  background: white;
 }
 
 .notesSection {
   border-right: 1px solid var(--border-light);
-  padding-right: 2rem;
+  padding-right: 2.5rem;
   display: flex;
   flex-direction: column;
 }
 
 .notesTitle {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 800;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 1.25rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notesTitle::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 2px;
 }
 
 .notesArea {
   width: 100%;
   border: none;
   background-image: linear-gradient(var(--border-light) 1px, transparent 1px);
-  background-size: 100% 2.25rem;
-  line-height: 2.25rem;
+  background-size: 100% 2.8rem;
+  line-height: 2.8rem;
   padding: 0;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--text-main);
   resize: none;
-  min-height: 250px;
+  min-height: 300px;
   outline: none;
   font-family: inherit;
+  transition: background-size 0.3s ease;
+}
+
+.notesArea:focus {
+  background-image: linear-gradient(var(--primary) 1px, transparent 1px);
 }
 
 .calendarGrid {
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
 .dayNames {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .dayNameShort {
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 900;
   color: var(--text-muted);
-  opacity: 0.6;
+  opacity: 0.5;
+  letter-spacing: 0.05em;
 }
 
 .daysGrid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 8px;
+}
+
+.slideForwardEnter {
+  animation: slideInRight 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slideBackwardEnter {
+  animation: slideInLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .dayCell {
@@ -166,11 +287,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  border-radius: 50%;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   z-index: 1;
   background: transparent;
@@ -180,13 +301,15 @@
 }
 
 .dayCell:hover:not(.outOfMonth) {
-  background: var(--border-light);
+  background: var(--accent-light);
   color: var(--primary);
-  transform: scale(1.1);
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 .dayCell:active:not(.outOfMonth) {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
 .outOfMonth {
@@ -198,171 +321,255 @@
 .inRange {
   background: var(--accent-light);
   border-radius: 0;
+  color: var(--primary-dark);
 }
 
 .rangeStart {
   background: var(--primary) !important;
   color: white !important;
-  border-radius: 50% 0 0 50%;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  border-radius: 16px 0 0 16px;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+  z-index: 2;
 }
 
 .rangeEnd {
   background: var(--primary) !important;
   color: white !important;
-  border-radius: 0 50% 50% 0;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  border-radius: 0 16px 16px 0;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+  z-index: 2;
 }
 
 .rangeSingle {
   background: var(--primary) !important;
   color: white !important;
-  border-radius: 50%;
-  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+  border-radius: 16px !important;
+  box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5);
+  z-index: 2;
 }
 
 .today {
-  box-shadow: inset 0 0 0 2px var(--primary);
-  color: var(--primary);
+  position: relative;
 }
 
-.navButtons {
+.today::after {
+  content: '';
   position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
+  bottom: 6px;
+  width: 5px;
+  height: 5px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+
+
+.gridSection {
   display: flex;
-  justify-content: space-between;
-  padding: 0 1.5rem;
-  pointer-events: none;
-  z-index: 10;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.navigationHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.navGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--border-light);
+  padding: 0.4rem;
+  border-radius: 20px;
+}
+
+.todayButton {
+  background: white;
+  color: var(--primary);
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 14px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.todayButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: var(--primary);
+  color: white;
 }
 
 .navButton {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  pointer-events: auto;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  color: var(--text-main);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+  color: var(--text-muted);
 }
 
 .navButton:hover {
   background: white;
-  transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  color: var(--primary);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .navButton:active {
   transform: scale(0.95);
 }
 
+
 .notesFooter {
   margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-light);
+  padding-top: 2rem;
+  border-top: 2px dashed var(--border-light);
 }
 
 .clearRangeButton {
-  background: none;
-  border: none;
+  background: var(--accent-light);
+  border: 1px solid rgba(59, 130, 246, 0.1);
   color: var(--primary);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
   cursor: pointer;
-  padding: 0;
-  margin-bottom: 0.5rem;
-  display: flex;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  gap: 8px;
+  transition: all 0.3s ease;
 }
 
 .clearRangeButton:hover {
-  opacity: 0.8;
-  transform: translateX(-2px);
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
 }
 
 .selectionClearHint {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
-  font-style: italic;
   display: block;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 950px) {
   .mainLayout {
     grid-template-columns: 1fr;
-    padding: 2rem;
+    padding: 2.25rem;
     gap: 2.5rem;
   }
-  
+
   .notesSection {
     border-right: none;
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 2px dashed var(--border-light);
     padding-right: 0;
     padding-bottom: 2.5rem;
     order: 2;
   }
-  
+
   .heroSection {
-    height: 220px;
+    height: 250px;
+    margin-bottom: -20px;
   }
-  
+
   .monthPlate {
-    padding: 1rem 2rem;
-    min-width: 200px;
-  }
-  
-  .monthText {
-    font-size: 1.8rem;
-  }
-  
-  .yearText {
-    font-size: 0.9rem;
+    bottom: 40px;
+    min-width: 240px;
+    padding: 1.25rem 3rem 1.25rem 2rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .calendarContainer {
     width: 100%;
     margin: 0;
     border-radius: 0;
   }
-  
+
   .spiralHeader {
-    display: none;
+    height: 32px;
+    gap: 6px;
+    border-radius: 0;
   }
-  
+
+  .spiralLink {
+    height: 16px;
+    width: 5px;
+  }
+
+  .heroSection {
+    height: 180px;
+    margin-bottom: -15px;
+    clip-path: ellipse(140% 100% at 50% 0%);
+  }
+
+  .monthPlate {
+    bottom: 30px;
+    min-width: 180px;
+    padding: 1rem 2rem 1rem 1.5rem;
+  }
+
+  .monthText {
+    font-size: 1.5rem;
+  }
+
+  .yearText {
+    font-size: 0.8rem;
+    letter-spacing: 0.2rem;
+  }
+
   .mainLayout {
-    padding: 1.5rem;
-    gap: 2rem;
+    padding: 1.25rem;
+    gap: 1.5rem;
   }
-  
+
+  .navigationHeader {
+    justify-content: center; /* Center navigation on mobile */
+    margin-bottom: 1rem;
+  }
+
+  .navGroup {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.3rem;
+  }
+
   .daysGrid {
     gap: 4px;
   }
-  
+
   .dayCell {
     font-size: 0.85rem;
+    border-radius: 10px;
   }
-  
-  .navButtons {
-    padding: 0 0.75rem;
+
+  .notesTitle {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
   }
-  
-  .navButton {
-    width: 36px;
-    height: 36px;
+
+  .notesArea {
+    min-height: 200px;
+    font-size: 1rem;
+    background-size: 100% 2.5rem;
+    line-height: 2.5rem;
   }
 }

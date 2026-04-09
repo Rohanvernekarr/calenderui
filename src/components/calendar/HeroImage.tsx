@@ -17,7 +17,7 @@ export default function HeroImage({ month }: HeroImageProps) {
         alt={`${monthName} visual`} 
         className={styles.heroImage}
       />
-      <div className={styles.monthPlate}>
+      <div className={styles.monthPlate} key={month.getTime()}>
         <div className={styles.yearText}>{year}</div>
         <div className={styles.monthText}>{monthName}</div>
       </div>

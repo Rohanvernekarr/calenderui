@@ -9,36 +9,47 @@ import NotesPanel from "./NotesPanel"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export function Calendar() {
-  const { days, currentMonth, nextMonth, prevMonth } = useCalendar()
+  const { days, currentMonth, nextMonth, prevMonth, direction, goToToday } = useCalendar()
   const { range, selectDate, clearRange } = useDateRange()
   
   return (
-    <div className={styles.calendarContainer} key={currentMonth.getTime()}>
+    <div className={styles.calendarContainer}>
       <div className={styles.spiralHeader}>
-        {[...Array(12)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <div key={i} className={styles.spiralLink} />
         ))}
       </div>
 
       <div className={styles.heroSection}>
         <HeroImage month={currentMonth} />
-        <div className={styles.navButtons}>
-          <button onClick={prevMonth} className={styles.navButton} aria-label="Previous month">
-            <ChevronLeft size={20} />
-          </button>
-          <button onClick={nextMonth} className={styles.navButton} aria-label="Next month">
-            <ChevronRight size={20} />
-          </button>
-        </div>
       </div>
 
       <div className={styles.mainLayout}>
         <NotesPanel range={range} month={currentMonth} onClearRange={clearRange} />
-        <CalendarGrid 
-          days={days} 
-          range={range} 
-          onSelect={selectDate} 
-        />
+        
+        <div className={styles.gridSection}>
+          <div className={styles.navigationHeader}>
+            <div className={styles.navGroup}>
+              <button onClick={prevMonth} className={styles.navButton} aria-label="Previous month">
+                <ChevronLeft size={22} strokeWidth={2.5} />
+              </button>
+              <button onClick={goToToday} className={styles.todayButton} aria-label="Go to today">
+                TODAY
+              </button>
+              <button onClick={nextMonth} className={styles.navButton} aria-label="Next month">
+                <ChevronRight size={22} strokeWidth={2.5} />
+              </button>
+            </div>
+          </div>
+
+          <CalendarGrid 
+            days={days} 
+            range={range} 
+            onSelect={selectDate} 
+            direction={direction}
+            monthKey={currentMonth.getTime()}
+          />
+        </div>
       </div>
     </div>
   )
