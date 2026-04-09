@@ -3,9 +3,8 @@
 import { useState } from "react"
 import { getMonthDays } from "../utils/calendar"
 
-export function useCalendar() {
-
-  const [currentMonth, setCurrentMonth] = useState(new Date())
+export function useCalendar(initialDate: Date = new Date()) {
+  const [currentMonth, setCurrentMonth] = useState(initialDate)
   const [direction, setDirection] = useState<'forward' | 'backward' | null>(null)
 
   const days = getMonthDays(currentMonth)

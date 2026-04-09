@@ -1,19 +1,62 @@
 "use client"
 
+import { useState, useMemo } from "react"
 import { useCalendar } from "../../hooks/useCalendar"
-import { useDateRange } from "../../hooks/useDateRange"
 import styles from "./Calendar.module.css"
 import HeroImage from "./HeroImage"
 import CalendarGrid from "./CalendarGrid"
 import NotesPanel from "./NotesPanel"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { DateRange } from "../../types/calendar"
+import { clsx } from "clsx"
 
-export function Calendar() {
-  const { days, currentMonth, nextMonth, prevMonth, direction, goToToday } = useCalendar()
-  const { range, selectDate, clearRange } = useDateRange()
+interface CalendarProps {
+  initialDate?: Date
+  mode?: 'single' | 'range'
+  onSelect?: (range: DateRange) => void
+  showNotes?: boolean
+  className?: string
+  style?: React.CSSProperties
+}
+
+export function Calendar({ 
+  initialDate = new Date(), 
+  mode = 'range',
+  onSelect,
+  showNotes = true,
+  className,
+  style
+}: CalendarProps) {
+  const { days, currentMonth, nextMonth, prevMonth, direction, goToToday } = useCalendar(initialDate)
+  const [range, setRange] = useState<DateRange>({ startDate: null, endDate: null })
+
+  const handleSelectDate = (date: Date) => {
+    let newRange: DateRange;
+    
+    if (mode === 'single') {
+      newRange = { startDate: date, endDate: date }
+    } else {
+      if (!range.startDate || (range.startDate && range.endDate)) {
+        newRange = { startDate: date, endDate: null }
+      } else if (date < range.startDate) {
+        newRange = { startDate: date, endDate: null }
+      } else {
+        newRange = { ...range, endDate: date }
+      }
+    }
+    
+    setRange(newRange)
+    onSelect?.(newRange)
+  }
+
+  const clearRange = () => {
+    const empty = { startDate: null, endDate: null }
+    setRange(empty)
+    onSelect?.(empty)
+  }
   
   return (
-    <div className={styles.calendarContainer}>
+    <div className={clsx(styles.calendarContainer, className)} style={style}>
       <div className={styles.spiralHeader}>
         {[...Array(20)].map((_, i) => (
           <div key={i} className={styles.spiralLink} />
@@ -25,10 +68,17 @@ export function Calendar() {
       </div>
 
       <div className={styles.mainLayout}>
-        <NotesPanel range={range} month={currentMonth} onClearRange={clearRange} />
+        {showNotes && (
+          <NotesPanel range={range} month={currentMonth} onClearRange={clearRange} />
+        )}
         
         <div className={styles.gridSection}>
-          <div className={styles.navigationHeader}>
+          <div className={styles.navigationHeader} style={!showNotes ? { justifyContent: 'space-between' } : {}}>
+            {!showNotes && (
+              <div className={styles.monthLabel}>
+                {currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}
+              </div>
+            )}
             <div className={styles.navGroup}>
               <button onClick={prevMonth} className={styles.navButton} aria-label="Previous month">
                 <ChevronLeft size={22} strokeWidth={2.5} />
@@ -45,7 +95,7 @@ export function Calendar() {
           <CalendarGrid 
             days={days} 
             range={range} 
-            onSelect={selectDate} 
+            onSelect={handleSelectDate} 
             direction={direction}
             monthKey={currentMonth.getTime()}
           />

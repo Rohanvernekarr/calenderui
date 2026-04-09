@@ -378,6 +378,13 @@
   margin-bottom: 0.5rem;
 }
 
+.monthLabel {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
 .navGroup {
   display: flex;
   align-items: center;
