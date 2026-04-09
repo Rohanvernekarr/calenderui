@@ -42,6 +42,7 @@ export function useDateRange() {
 
   return {
     range,
-    selectDate
+    selectDate,
+    clearRange: () => setRange({ startDate: null, endDate: null })
   }
 }
