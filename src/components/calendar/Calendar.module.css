@@ -1,0 +1,253 @@
+.calendarContainer {
+  --primary: #3b82f6;
+  --secondary: #6366f1;
+  --bg-card: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border-light: #f3f4f6;
+  --accent-light: #eff6ff;
+  
+  max-width: 900px;
+  margin: 2rem auto;
+  background: var(--bg-card);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.spiralHeader {
+  height: 40px;
+  background: #f9fafb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-light);
+  z-index: 10;
+  position: relative;
+}
+
+.spiralLink {
+  width: 8px;
+  height: 24px;
+  background: #d1d5db;
+  border-radius: 4px;
+  box-shadow: inset 2px 0 4px rgba(0,0,0,0.1);
+}
+
+.heroSection {
+  position: relative;
+  height: 380px;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.heroSection:hover .heroImage {
+  transform: scale(1.05);
+}
+
+.monthPlate {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--primary);
+  color: white;
+  padding: 2rem 4rem;
+  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+  text-align: right;
+  min-width: 300px;
+  box-shadow: -10px 0 20px rgba(0,0,0,0.1);
+}
+
+.yearText {
+  font-size: 1.25rem;
+  font-weight: 300;
+  opacity: 0.9;
+  letter-spacing: 0.1em;
+}
+
+.monthText {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-top: -5px;
+}
+
+.mainLayout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  padding: 3rem;
+  gap: 4rem;
+}
+
+.notesSection {
+  border-right: 1px solid var(--border-light);
+  padding-right: 2rem;
+}
+
+.notesTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+
+.notesArea {
+  width: 100%;
+  border: none;
+  background-image: linear-gradient(var(--border-light) 1px, transparent 1px);
+  background-size: 100% 2rem;
+  line-height: 2rem;
+  padding: 0;
+  font-size: 1rem;
+  color: var(--text-main);
+  resize: none;
+  min-height: 300px;
+  outline: none;
+}
+
+.calendarGrid {
+  display: flex;
+  flex-direction: column;
+}
+
+.dayNames {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.dayNameShort {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.dayCell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.dayCell:hover:not(.outOfMonth) {
+  background: var(--border-light);
+  color: var(--primary);
+}
+
+.outOfMonth {
+  color: #d1d5db;
+  cursor: default;
+}
+
+.inRange {
+  background: var(--accent-light);
+  border-radius: 0;
+}
+
+.rangeStart {
+  background: var(--primary) !important;
+  color: white !important;
+  border-radius: 50% 0 0 50%;
+}
+
+.rangeEnd {
+  background: var(--primary) !important;
+  color: white !important;
+  border-radius: 0 50% 50% 0;
+}
+
+.rangeSingle {
+  background: var(--primary) !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.today {
+  box-shadow: inset 0 0 0 2px var(--primary);
+  color: var(--primary);
+}
+
+.navButtons {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  pointer-events: none;
+}
+
+.navButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+  color: var(--text-main);
+}
+
+.navButton:hover {
+  background: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+  .mainLayout {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 2rem;
+  }
+  
+  .notesSection {
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+    padding-right: 0;
+    padding-bottom: 2rem;
+    order: 2;
+  }
+  
+  .monthPlate {
+    padding: 1rem 2rem;
+    min-width: 200px;
+  }
+  
+  .monthText {
+    font-size: 1.75rem;
+  }
+}

@@ -3,9 +3,16 @@ export type DateRange = {
   endDate: Date | null;
 };
 
+export interface CalendarDay {
+  date: Date;
+  isCurrentMonth: boolean;
+  isToday: boolean;
+}
+
 export type DayCellProps = {
   date: Date;
-  isSelected: boolean;
+  isCurrentMonth: boolean;
+  isToday: boolean;
   isInRange: boolean;
   isStart: boolean;
   isEnd: boolean;

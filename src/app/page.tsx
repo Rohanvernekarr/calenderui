@@ -1,14 +1,9 @@
 import { Calendar } from "@/src/components/calendar"
 
 export default function Home() {
-
   return (
-
-    <main className="min-h-screen bg-gray-300 p-10">
-
+    <main style={{ padding: '2rem', width: '100%', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Calendar />
-
     </main>
-
   )
 }

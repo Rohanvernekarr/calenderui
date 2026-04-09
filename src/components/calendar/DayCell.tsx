@@ -1,31 +1,43 @@
 "use client"
 
-import { DayCellProps } from "../../types/calendar"
-import clsx from "clsx"
+import styles from "./Calendar.module.css"
+
+interface DayCellProps {
+  date: Date
+  isCurrentMonth: boolean
+  isToday: boolean
+  isInRange: boolean
+  isStart: boolean
+  isEnd: boolean
+  onSelect: (date: Date) => void
+}
 
 export default function DayCell({
   date,
-  isSelected,
+  isCurrentMonth,
+  isToday,
   isInRange,
   isStart,
   isEnd,
   onSelect
 }: DayCellProps) {
+  const isSelected = isStart || isEnd
+  const isSingle = isStart && isEnd
+
+  let className = styles.dayCell
+  if (!isCurrentMonth) className += ` ${styles.outOfMonth}`
+  if (isToday) className += ` ${styles.today}`
+  if (isInRange) className += ` ${styles.inRange}`
+  if (isStart) className += ` ${styles.rangeStart}`
+  if (isEnd) className += ` ${styles.rangeEnd}`
+  if (isSingle) className += ` ${styles.rangeSingle}`
 
   return (
-
     <button
-      onClick={() => onSelect(date)}
-      className={clsx(
-        "h-10 w-10 flex items-center justify-center rounded-md text-sm transition",
-
-        isInRange && "bg-blue-200",
-        (isStart || isEnd) && "bg-blue-600 text-white",
-        isSelected && "bg-blue-600 text-white"
-      )}
+      onClick={() => isCurrentMonth && onSelect(date)}
+      className={className}
     >
       {date.getDate()}
     </button>
-
   )
 }

@@ -1,46 +1,47 @@
 "use client"
 
+import styles from "./Calendar.module.css"
 import DayCell from "./DayCell"
-import { isWithinInterval, isSameDay } from "date-fns"
+import { CalendarDay, DateRange } from "../../types/calendar"
 
-export default function CalendarGrid({
-  days,
-  range,
-  onSelect
-}: any) {
+interface CalendarGridProps {
+  days: CalendarDay[]
+  range: DateRange
+  onSelect: (date: Date) => void
+}
+
+const WEEKDAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
+
+export default function CalendarGrid({ days, range, onSelect }: CalendarGridProps) {
+  const isDateInRange = (date: Date) => {
+    if (!range.startDate || !range.endDate) return false
+    return date >= range.startDate && date <= range.endDate
+  }
+
+  const isStart = (date: Date) => range.startDate?.toDateString() === date.toDateString()
+  const isEnd = (date: Date) => range.endDate?.toDateString() === date.toDateString()
 
   return (
-
-    <div className="grid grid-cols-7 gap-2">
-
-      {days.map((day: Date) => {
-
-        const isStart = range.start && isSameDay(day, range.start)
-        const isEnd = range.end && isSameDay(day, range.end)
-
-        const isInRange =
-          range.start &&
-          range.end &&
-          isWithinInterval(day, {
-            start: range.start,
-            end: range.end
-          })
-
-        return (
+    <div className={styles.calendarGrid}>
+      <div className={styles.dayNames}>
+        {WEEKDAYS.map(day => (
+          <div key={day} className={styles.dayNameShort}>{day}</div>
+        ))}
+      </div>
+      <div className={styles.daysGrid}>
+        {days.map((day, i) => (
           <DayCell
-            key={day.toString()}
-            date={day}
+            key={i}
+            date={day.date}
+            isCurrentMonth={day.isCurrentMonth}
+            isToday={day.date.toDateString() === new Date().toDateString()}
+            isInRange={isDateInRange(day.date)}
+            isStart={isStart(day.date)}
+            isEnd={isEnd(day.date)}
             onSelect={onSelect}
-            isStart={!!isStart}
-            isEnd={!!isEnd}
-            isSelected={!!(isStart || isEnd)}
-            isInRange={!!isInRange}
           />
-        )
-
-      })}
-
+        ))}
+      </div>
     </div>
-
   )
 }

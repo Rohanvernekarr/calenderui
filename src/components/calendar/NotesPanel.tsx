@@ -1,36 +1,31 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import styles from "./Calendar.module.css"
 
 export default function NotesPanel() {
-
-  const [notes, setNotes] = useState("")
+  const [note, setNote] = useState("")
 
   useEffect(() => {
-    const saved = localStorage.getItem("calendar-notes")
-    if (saved) setNotes(saved)
+    const saved = localStorage.getItem("calendar_notes")
+    if (saved) setNote(saved)
   }, [])
 
-  useEffect(() => {
-    localStorage.setItem("calendar-notes", notes)
-  }, [notes])
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value
+    setNote(value)
+    localStorage.setItem("calendar_notes", value)
+  }
 
   return (
-
-    <div className="flex flex-col gap-2">
-
-      <h2 className="font-semibold text-lg">
-        Notes
-      </h2>
-
+    <div className={styles.notesSection}>
+      <h3 className={styles.notesTitle}>Notes</h3>
       <textarea
-        className="w-full h-40 border rounded-md p-3"
-        placeholder="Write notes..."
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
+        className={styles.notesArea}
+        placeholder="Jot down some memos..."
+        value={note}
+        onChange={handleChange}
       />
-
     </div>
-
   )
 }

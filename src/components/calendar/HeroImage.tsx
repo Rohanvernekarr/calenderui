@@ -1,26 +1,26 @@
-import Image from "next/image"
-import { format } from "date-fns"
+"use client"
 
-export default function HeroImage({ month }: { month: Date }) {
+import styles from "./Calendar.module.css"
+
+interface HeroImageProps {
+  month: Date
+}
+
+export default function HeroImage({ month }: HeroImageProps) {
+  const monthName = month.toLocaleString('default', { month: 'long' })
+  const year = month.getFullYear()
 
   return (
-
-    <div className="relative h-64 w-full">
-
-      <Image
-        src="/calendar.jpg"
-        alt="calendar"
-        fill
-        className="object-cover"
+    <>
+      <img 
+        src="/calendar_hero.png" 
+        alt={`${monthName} visual`} 
+        className={styles.heroImage}
       />
-
-      <div className="absolute bottom-4 right-4 text-white text-xl font-bold">
-
-        {format(month, "MMMM yyyy")}
-
+      <div className={styles.monthPlate}>
+        <div className={styles.yearText}>{year}</div>
+        <div className={styles.monthText}>{monthName}</div>
       </div>
-
-    </div>
-
+    </>
   )
 }

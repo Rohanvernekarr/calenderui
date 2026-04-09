@@ -1,4 +1,4 @@
-export { default as Calendar } from "./Calendar"
+export { Calendar } from "./Calendar"
 export { default as CalendarGrid } from "./CalendarGrid"
 export { default as DayCell } from "./DayCell"
 export { default as HeroImage } from "./HeroImage"
